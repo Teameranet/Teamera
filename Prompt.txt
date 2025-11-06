@@ -564,3 +564,4 @@ If User apply the project project with (Uplode file ) updated the data in real t
 - Update the Dashbord of Both User ( Rescive & Send ) Section with correct details 
 -----------------------------------------------------
 I see! The acceptApplication and rejectApplication functions are only updating local state, not calling the backend API. Let me update them to call the backend:
+---------------
