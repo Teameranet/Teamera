@@ -114,7 +114,7 @@
   color: white;
 }
 
-.join-squad-btn {
+.join-Teamera-btn {
   background: #2563eb;
   color: white;
   border: 2px solid #2563eb;
@@ -125,12 +125,12 @@
   transition: all 0.3s ease;
 }
 
-.join-squad-btn:hover {
+.join-Teamera-btn:hover {
   background: transparent;
   color: #2563eb;
 }
 
-.join-squad-btn.mobile {
+.join-Teamera-btn.mobile {
   width: 100%;
   margin-bottom: 0.5rem;
   justify-content: center;

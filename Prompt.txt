@@ -327,7 +327,7 @@ Customize things easily (with a settings/customize icon)
 Filter categories fast (with a filter icon)
 Get Project Started (with a chart/project icon)
 -------------------------------------
--  Create a simple new 'Community' page , Squad.net, based on my design System 
+-  Create a simple new 'Community' page , Teamera.net, based on my design System 
 - According to my design System 
 - Ensure the layout & element  should match with attach image file 
 - Shared files in messages should display a file-type icon, the filename, and its size
