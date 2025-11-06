@@ -565,3 +565,4 @@ If User apply the project project with (Uplode file ) updated the data in real t
 -----------------------------------------------------
 I see! The acceptApplication and rejectApplication functions are only updating local state, not calling the backend API. Let me update them to call the backend:
 ---------------
+Integrate Supabase into this project for data storage & connect frontend to backend to API integrate
