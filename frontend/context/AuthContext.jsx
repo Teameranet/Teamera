@@ -83,12 +83,12 @@ export const AuthProvider = ({ children }) => {
 
       // Set session and user immediately
       setSession(data.session);
-      
+
       // Try to fetch profile with timeout
       let profile = null;
       try {
         const profilePromise = fetchUserProfile(data.user.id);
-        const timeoutPromise = new Promise((_, reject) => 
+        const timeoutPromise = new Promise((_, reject) =>
           setTimeout(() => reject(new Error('Profile fetch timeout')), 5000)
         );
         profile = await Promise.race([profilePromise, timeoutPromise]);
@@ -127,8 +127,8 @@ export const AuthProvider = ({ children }) => {
       // Check if email confirmation is required
       if (!data.session) {
         // Email confirmation is required
-        return { 
-          success: true, 
+        return {
+          success: true,
           user: data.user,
           requiresEmailConfirmation: true,
           message: 'Please check your email to confirm your account before logging in.'
@@ -137,44 +137,45 @@ export const AuthProvider = ({ children }) => {
 
       // Set session and user immediately
       setSession(data.session);
-      if (data.user) {
-        setUser(data.user);
-      }
 
-      // Wait a bit for session to be fully established
-      await new Promise(resolve => setTimeout(resolve, 500));
+      // Create basic user object from auth data
+      const basicUser = {
+        id: data.user.id,
+        email: email,
+        name: name
+      };
+      setUser(basicUser);
 
-      // Wait a bit for the database trigger to create the profile
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Try to create profile in background (don't wait for it)
+      setTimeout(async () => {
+        try {
+          // Check if profile exists
+          const { data: existingProfile } = await supabase
+            .from('profiles')
+            .select('id')
+            .eq('id', data.user.id)
+            .maybeSingle();
 
-      // Try to fetch profile, with retry logic
-      let profile = null;
-      for (let i = 0; i < 3; i++) {
-        profile = await fetchUserProfile(data.user.id);
-        if (profile) break;
-        await new Promise(resolve => setTimeout(resolve, 500));
-      }
+          if (!existingProfile) {
+            // Create profile if it doesn't exist
+            await supabase
+              .from('profiles')
+              .insert({
+                id: data.user.id,
+                email: email,
+                name: name
+              });
+          }
 
-      // If profile still doesn't exist, create it manually
-      if (!profile) {
-        const { data: newProfile, error: profileError } = await supabase
-          .from('profiles')
-          .insert({
-            id: data.user.id,
-            email: email,
-            name: name
-          })
-          .select()
-          .single();
-
-        if (!profileError) {
-          profile = newProfile;
-          setUser(newProfile);
+          // Fetch the complete profile
+          await fetchUserProfile(data.user.id);
+        } catch (profileError) {
+          console.warn('Background profile creation failed:', profileError);
         }
-      }
+      }, 100);
 
       setShowAuthModal(false);
-      return { success: true, user: profile || data.user };
+      return { success: true, user: basicUser };
     } catch (error) {
       console.error('Signup error:', error);
       return { success: false, error: error.message };
@@ -230,7 +231,7 @@ export const AuthProvider = ({ children }) => {
     try {
       // Get current user directly from Supabase (most reliable method)
       const { data: { user: currentUser }, error: userError } = await supabase.auth.getUser();
-      
+
       // Fallback to session if getUser fails
       let userId, userEmail;
       if (currentUser) {
