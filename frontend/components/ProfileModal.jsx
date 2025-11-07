@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react';
-import { useRealtimeProfile } from '../hooks/useRealtimeProfile';
+import { useState } from 'react';
 import UserAvatar from './UserAvatar';
 import './ProfileModal.css';
 import { X, Github, Linkedin, Globe, Twitter, Instagram, Phone, Mail } from 'lucide-react';
@@ -17,17 +16,6 @@ import { X, Github, Linkedin, Globe, Twitter, Instagram, Phone, Mail } from 'luc
  */
 function ProfileModal({ user, onClose }) {
   const [activeTab, setActiveTab] = useState('about');
-  const [profileData, setProfileData] = useState(user);
-
-  // Update profile data when user prop changes
-  useEffect(() => {
-    setProfileData(user);
-  }, [user]);
-
-  // Subscribe to real-time updates for this profile
-  useRealtimeProfile(user?.id, (updatedProfile) => {
-    setProfileData(updatedProfile);
-  });
 
   // Map user role to display title (match Profile page behavior)
   const getRoleDisplayTitle = (role) => {
@@ -41,7 +29,7 @@ function ProfileModal({ user, onClose }) {
   };
 
   // If no user is provided, return null
-  if (!profileData) return null;
+  if (!user) return null;
 
   return (
     <div className="profile-modal-overlay" onClick={onClose}>
@@ -52,11 +40,11 @@ function ProfileModal({ user, onClose }) {
 
         {/* Header with user avatar and basic info */}
         <div className="profile-header">
-          <UserAvatar user={profileData} size="large" className="profile-avatar" />
+          <UserAvatar user={user} size="large" className="profile-avatar" />
           <div className="profile-basic-info">
-            <h2>{profileData.name}</h2>
-            <p className="profile-title">{profileData.title || getRoleDisplayTitle(profileData.role)}</p>
-            {profileData.location && <p className="profile-location">{profileData.location}</p>}
+            <h2>{user.name}</h2>
+            <p className="profile-title">{user.title || getRoleDisplayTitle(user.role)}</p>
+            {user.location && <p className="profile-location">{user.location}</p>}
           </div>
         </div>
 
@@ -93,40 +81,40 @@ function ProfileModal({ user, onClose }) {
           {activeTab === 'about' && (
             <div className="profile-about">
               <h3>About</h3>
-              <p>{profileData.bio || 'No bio information available.'}</p>
+              <p>{user.bio || 'No bio information available.'}</p>
 
               {/* Contact information */}
               <div className="contact-info">
                 <h4>Contact</h4>
                 
                 {/* Basic contact info */}
-                {profileData.email && (
+                {user.email && (
                   <div className="contact-item">
                     <Mail size={16} />
-                    <span>{profileData.email}</span>
+                    <span>{user.email}</span>
                   </div>
                 )}
                 
 
                 {/* Social media links */}
-                {(profileData.github_url || profileData.linkedin_url || profileData.portfolio_url) && (
+                {(user.githubUrl || user.linkedinUrl || user.portfolioUrl || user.twitterUrl || user.instagramUrl) && (
                   <div className="social-media-section">
                     <h5>Social Media</h5>
                     <div className="social-links-grid">
-                      {profileData.github_url && (
-                        <a href={profileData.github_url} target="_blank" rel="noopener noreferrer" className="social-link">
+                      {user.githubUrl && (
+                        <a href={user.githubUrl} target="_blank" rel="noopener noreferrer" className="social-link">
                           <Github size={20} />
                           <span>GitHub</span>
                         </a>
                       )}
-                      {profileData.linkedin_url && (
-                        <a href={profileData.linkedin_url} target="_blank" rel="noopener noreferrer" className="social-link">
+                      {user.linkedinUrl && (
+                        <a href={user.linkedinUrl} target="_blank" rel="noopener noreferrer" className="social-link">
                           <Linkedin size={20} />
                           <span>LinkedIn</span>
                         </a>
                       )}
-                      {profileData.portfolio_url && (
-                        <a href={profileData.portfolio_url} target="_blank" rel="noopener noreferrer" className="social-link">
+                      {user.portfolioUrl && (
+                        <a href={user.portfolioUrl} target="_blank" rel="noopener noreferrer" className="social-link">
                           <Globe size={20} />
                           <span>Portfolio</span>
                         </a>
@@ -143,8 +131,8 @@ function ProfileModal({ user, onClose }) {
             <div className="profile-experience">
               <h3>Experience</h3>
               {(() => {
-                const experiences = Array.isArray(profileData.work_experience) ? profileData.work_experience : 
-                                 Array.isArray(profileData.experience) ? profileData.experience : [];
+                const experiences = Array.isArray(user.experiences) ? user.experiences : 
+                                 Array.isArray(user.experience) ? user.experience : [];
                 return experiences.length > 0 ? (
                 <div className="experience-list">
                   {experiences.map((exp, index) => (
@@ -172,7 +160,7 @@ function ProfileModal({ user, onClose }) {
             <div className="profile-education">
               <h3>Education</h3>
               {(() => {
-                const education = Array.isArray(profileData.education) ? profileData.education : [];
+                const education = Array.isArray(user.education) ? user.education : [];
                 return education.length > 0 ? (
                 <div className="education-list">
                   {education.map((edu, index) => (
@@ -197,7 +185,7 @@ function ProfileModal({ user, onClose }) {
             <div className="profile-skills">
               <h3>Skills</h3>
               {(() => {
-                const skills = Array.isArray(profileData.skills) ? profileData.skills : [];
+                const skills = Array.isArray(user.skills) ? user.skills : [];
                 return skills.length > 0 ? (
                 <div className="skills-list">
                   {skills.map((skill, index) => {

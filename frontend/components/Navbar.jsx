@@ -38,7 +38,7 @@ function Navbar({ onAuthClick, onCreateProject, onCollaborationClick }) {
       <div className="nav-container">
         {/* Logo Section */}
         <Link to="/" className="nav-logo">
-          <span className="logo-text">Teamera</span>
+          <span className="logo-text">Squad</span>
           <span className="logo-dot">.net</span>
         </Link>
 
@@ -142,10 +142,10 @@ function Navbar({ onAuthClick, onCreateProject, onCollaborationClick }) {
               </div>
             </>
           ) : (
-            // If user is not logged in, show Join Teamera button
+            // If user is not logged in, show Join Squad button
             <>
-              <button className="join-Teamera-btn" onClick={() => onAuthClick('signup')}>
-                Join Teamera
+              <button className="join-squad-btn" onClick={() => onAuthClick('signup')}>
+                Join Squad
               </button>
             </>
           )}
@@ -250,16 +250,16 @@ function Navbar({ onAuthClick, onCreateProject, onCollaborationClick }) {
                   </button>
                 </>
               ) : (
-                // If user is not logged in, show Join Teamera button
+                // If user is not logged in, show Join Squad button
                 <>
                   <button 
-                    className="join-Teamera-btn mobile"
+                    className="join-squad-btn mobile"
                     onClick={() => {
                       onAuthClick('signup');
                       setShowMobileMenu(false);
                     }}
                   >
-                    Join Teamera
+                    Join Squad
                   </button>
                 </>
               )}

@@ -9,7 +9,7 @@ function Footer() {
           {/* Logo */}
           <div className="footer-logo">
             {/* <div className="logo-icon"></div> */}
-            <span className="logo-text">Teamera.net</span>
+            <span className="logo-text">Squad.net</span>
           </div>
           
           {/* Navigation */}
@@ -38,7 +38,7 @@ function Footer() {
         
         {/* Copyright */}
         <div className="footer-copyright">
-          <p>© Copyright 2025, All Rights Reserved by Teamera.net</p>
+          <p>© Copyright 2025, All Rights Reserved by Squad.net</p>
         </div>
       </div>
     </footer>

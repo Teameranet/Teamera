@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { useState, startTransition } from 'react';
+import { useState, useEffect, startTransition } from 'react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -79,26 +79,13 @@ function App() {
             {/* Modals */}
             {showAuthModal && (
               <AuthModal 
-                onClose={() => {
-                  setShowAuthModal(false);
-                }}
+                onClose={() => handleModalState(setShowAuthModal, false)}
                 onSuccess={(userData) => {
-                  // Check if user needs onboarding
-                  const needsOnboarding = userData && 
-                    userData.id !== '1' && 
-                    (userData.needsOnboarding || 
-                     !userData.bio || 
-                     !userData.skills || 
-                     userData.skills.length === 0 || 
-                     !userData.role || 
-                     !userData.experience);
-                  
-                  // Close auth modal and open onboarding immediately
-                  setShowAuthModal(false);
-                  
-                  if (needsOnboarding) {
-                    // Open onboarding modal immediately
-                    setShowOnboarding(true);
+                  handleModalState(setShowAuthModal, false);
+                  // Only show onboarding for new users without complete profiles
+                  // Skip onboarding for User-1 (demo user)
+                  if (userData.id !== '1' && (!userData.bio || !userData.skills || userData.skills.length === 0)) {
+                    handleModalState(setShowOnboarding, true);
                   }
                 }}
               />
@@ -106,9 +93,7 @@ function App() {
 
             {showOnboarding && (
               <OnboardingModal 
-                onClose={() => {
-                  setShowOnboarding(false);
-                }}
+                onClose={() => handleModalState(setShowOnboarding, false)}
               />
             )}
 

@@ -14,8 +14,7 @@ function AuthModal({ onClose, onSuccess }) {
     agreeToTerms: false
   });
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const { login, signup, signInWithGoogle, signInWithMicrosoft } = useAuth();
+  const { login } = useAuth();
 
   const handleInputChange = (e) => {
     const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
@@ -27,80 +26,75 @@ function AuthModal({ onClose, onSuccess }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
     setLoading(true);
 
-    try {
-      if (isLogin) {
-        // Login
-        const result = await login(formData.email, formData.password);
-        if (result.success) {
-          onSuccess(result.user);
-        } else {
-          setError(result.error || 'Login failed');
-        }
-      } else {
-        // Signup
-        if (formData.password !== formData.confirmPassword) {
-          setError('Passwords do not match');
-          setLoading(false);
-          return;
-        }
+    // Simulate API call
+    setTimeout(() => {
+      const userData = {
+        id: Date.now(),
+        name: formData.fullName || formData.email.split('@')[0],
+        email: formData.email,
+        role: 'user',
+        avatar: '/api/placeholder/40/40',
+        // For existing users, simulate having profile data
+        bio: isLogin ? 'Experienced developer passionate about building innovative solutions' : '',
+        skills: isLogin ? ['React', 'Node.js', 'JavaScript'] : [],
+        experience: isLogin ? '2-3' : '',
+        location: isLogin ? 'Mumbai, India' : ''
+      };
 
-        const result = await signup(formData.email, formData.password, formData.fullName);
-        if (result.success) {
-          // Always call onSuccess with user data to trigger onboarding
-          // Even if email confirmation is required, we want to show onboarding
-          console.log('Signup successful, calling onSuccess with user:', result.user);
-          
-          if (result.requiresEmailConfirmation) {
-            // Show message but still proceed to onboarding
-            console.log('Email confirmation required, but proceeding to onboarding');
-          }
-          
-          // Call onSuccess to trigger onboarding modal
-          onSuccess(result.user);
-        } else {
-          setError(result.error || 'Signup failed');
-        }
-      }
-    } catch (err) {
-      setError(err.message || 'An error occurred');
-    } finally {
+      login(userData);
       setLoading(false);
-    }
+      onSuccess(userData);
+    }, 1000);
   };
 
-  const handleGoogleAuth = async () => {
-    setError('');
+  const handleGoogleAuth = () => {
     setLoading(true);
-    try {
-      const result = await signInWithGoogle();
-      if (!result.success) {
-        setError(result.error || 'Google sign-in failed');
-        setLoading(false);
-      }
-      // OAuth will redirect, so we don't need to handle success here
-    } catch (err) {
-      setError(err.message || 'Google sign-in failed');
+    // Simulate Google OAuth
+    setTimeout(() => {
+      const userData = {
+        id: Date.now(),
+        name: 'John Doe',
+        email: 'john.doe@gmail.com',
+        role: 'user',
+        avatar: '/api/placeholder/40/40',
+        provider: 'google',
+        // Simulate existing user with complete profile
+        bio: 'Full-stack developer with 5 years of experience in building scalable web applications',
+        skills: ['React', 'Node.js', 'Python', 'UI/UX Design'],
+        experience: '4-6',
+        location: 'Bangalore, India'
+      };
+
+      login(userData);
       setLoading(false);
-    }
+      onSuccess(userData);
+    }, 1000);
   };
 
-  const handleMicrosoftAuth = async () => {
-    setError('');
+  const handleMicrosoftAuth = () => {
     setLoading(true);
-    try {
-      const result = await signInWithMicrosoft();
-      if (!result.success) {
-        setError(result.error || 'Microsoft sign-in failed');
-        setLoading(false);
-      }
-      // OAuth will redirect, so we don't need to handle success here
-    } catch (err) {
-      setError(err.message || 'Microsoft sign-in failed');
+    // Simulate Microsoft OAuth
+    setTimeout(() => {
+      const userData = {
+        id: Date.now(),
+        name: 'Jane Smith',
+        email: 'jane.smith@outlook.com',
+        role: 'user',
+        avatar: '/api/placeholder/40/40',
+        provider: 'microsoft',
+        // Simulate existing user with complete profile
+        bio: 'Product manager and entrepreneur focused on healthcare technology solutions',
+        skills: ['Product Management', 'Marketing', 'Data Science'],
+        experience: '7+',
+        location: 'Delhi, India'
+      };
+
+      login(userData);
       setLoading(false);
-    }
+      onSuccess(userData);
+    }, 1000);
   };
 
   // Demo user login disabled
@@ -109,7 +103,7 @@ function AuthModal({ onClose, onSuccess }) {
     <div className="modal-overlay" onClick={onClose}>
       <div className="auth-modal" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
-          <h2>{isLogin ? 'Welcome Back' : 'Join Teamera.net'}</h2>
+          <h2>{isLogin ? 'Welcome Back' : 'Join Squad.net'}</h2>
           <button className="close-btn" onClick={onClose}>
             <span>×</span>
           </button>
@@ -131,11 +125,7 @@ function AuthModal({ onClose, onSuccess }) {
         </div>
 
         <div className="auth-content">
-          {error && (
-            <div className="auth-error">
-              {error}
-            </div>
-          )}
+          {/* Demo Users Section removed */}
 
           <form onSubmit={handleSubmit} className="auth-form">
             {!isLogin && (

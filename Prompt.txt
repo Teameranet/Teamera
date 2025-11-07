@@ -576,3 +576,8 @@ The major Problem is
 Create A test case of User & delete it after testing
 -------------------------------------------------------
 The User should remains login after refreash the page after conplite the Sign UP
+--------------------------------------------------------------
+For new users (signup): Opens onboarding modal
+For existing users (login): Just closes the modal and user is logged in
+------------------------------------------------------
+create a simple test to verify the auth flow works.
