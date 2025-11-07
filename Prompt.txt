@@ -566,3 +566,13 @@ If User apply the project project with (Uplode file ) updated the data in real t
 I see! The acceptApplication and rejectApplication functions are only updating local state, not calling the backend API. Let me update them to call the backend:
 ---------------
 Integrate Supabase into this project for data storage & connect frontend to backend to API integrate
+-------------------------------------------
+The major Problem is 
+
+- On SignUp Section After Click on Create Account  User cannot proceed to onboarding  model immediately (same issue with SignIn section)
+
+- After Click on Complete button it is Freeze on onboarding  model
+------------------------------------------------
+Create A test case of User & delete it after testing
+-------------------------------------------------------
+The User should remains login after refreash the page after conplite the Sign UP

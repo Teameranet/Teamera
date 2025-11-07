@@ -1,11 +1,6 @@
 # Implementation Plan
 
-- [x] 1. Set up Supabase project and configuration
-
-
-
-
-
+- [x] 1. Set up Supabase project and configuration ✅ COMPLETED
   - Create a new Supabase project at supabase.com
   - Copy the project URL and API keys (anon key and service role key)
   - Create `.env` file in the backend directory with `SUPABASE_URL`, `SUPABASE_SERVICE_KEY`, `SUPABASE_ANON_KEY`, `PORT`, `JWT_SECRET`, and `NODE_ENV`
@@ -13,19 +8,24 @@
   - Install Supabase dependencies: `npm install @supabase/supabase-js` in both root and backend directories
   - _Requirements: 1.1, 1.2, 1.3, 1.4_
 
-- [ ] 2. Create database schema and security policies
-  - Create `backend/config/database-schema.sql` file with all table definitions
-  - Execute SQL to create users, projects, project_positions, project_members, applications, messages, tasks, files, notifications, and saved_projects tables
-  - Add foreign key constraints and indexes for performance
-  - Enable Row Level Security on all tables
-  - Create RLS policies for users table (view all, update own, insert own)
-  - Create RLS policies for projects table (view active, create own, update own, delete own)
-  - Create RLS policies for messages table (project members can view and create)
-  - Create RLS policies for notifications table (users can view and update own)
-  - Create RLS policies for other tables following the same pattern
-  - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 2.9, 2.10, 2.11, 10.1, 10.2, 10.3, 10.4, 10.5, 10.6, 10.7, 10.8, 10.9_
+- [x] 2. Create profiles table schema with onboarding fields
 
-- [ ] 3. Initialize Supabase clients
+
+
+
+
+  - Create `backend/config/profiles-schema.sql` file with profiles table definition
+  - Include fields: id, email, name, title, bio, role, skills (text array), experience, location, github_url, linkedin_url, portfolio_url, education (JSONB), work_experience (JSONB), avatar_url, created_at, updated_at
+  - Add foreign key constraint to auth.users(id) with CASCADE delete
+  - Create trigger to auto-update updated_at timestamp
+  - Enable Row Level Security on profiles table
+  - Create RLS policy: "Users can view all profiles" (SELECT for all)
+  - Create RLS policy: "Users can update own profile" (UPDATE where auth.uid() = id)
+  - Create RLS policy: "Users can insert own profile" (INSERT where auth.uid() = id)
+  - Execute SQL in Supabase SQL Editor to create the table
+  - _Requirements: 2.1, 10.1, 10.2, 10.3_
+
+- [x] 3. Initialize Supabase clients ✅ COMPLETED
   - Create `src/lib/supabaseClient.js` in frontend with Supabase client initialization using anon key
   - Configure auth options (autoRefreshToken, persistSession, detectSessionInUrl)
   - Create `backend/config/supabase.js` with Supabase client initialization using service role key
@@ -33,41 +33,95 @@
   - Update `backend/server.js` to validate database connection on startup
   - _Requirements: 1.2, 1.3, 1.5_
 
-- [ ] 4. Implement authentication system
-- [ ] 4.1 Create backend authentication endpoints
-  - Create `backend/api/services/authService.js` with methods for signup, login, session validation, and OAuth handling
-  - Create `backend/api/controllers/authController.js` with handlers for signup, login, logout, OAuth (Google/Microsoft), and session retrieval
-  - Create `backend/api/routes/auth.js` with routes: POST /signup, POST /login, POST /logout, POST /oauth/google, POST /oauth/microsoft, GET /session
-  - Create `backend/middleware/auth.js` to validate JWT tokens and extract user ID from requests
-  - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.6_
+- [x] 4. Implement authentication system ✅ COMPLETED
+- [x] 4.1 Create backend authentication endpoints (SKIPPED - Using Supabase Auth directly)
+  - Supabase Auth handles all authentication server-side
+  - No custom backend endpoints needed for auth
+  - _Requirements: 3.1, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8_
 
-- [ ] 4.2 Update frontend AuthContext
+- [x] 4.2 Update frontend AuthContext ✅ COMPLETED
   - Update `frontend/context/AuthContext.jsx` to use Supabase Auth instead of localStorage
   - Implement signup method using Supabase Auth
   - Implement login method with email/password using Supabase Auth
   - Implement OAuth login methods for Google and Microsoft
   - Implement logout method to clear Supabase session
   - Implement session persistence and auto-refresh
-  - Update profile method to sync with backend API
-  - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 3.7_
+  - Update profile method to sync with Supabase profiles table
+  - _Requirements: 3.1, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8_
 
-- [ ] 5. Implement user management API
-- [ ] 5.1 Create user service and controller
+- [x] 5. Integrate OnboardingModal with Supabase profiles
+
+
+
+
+
+  - Update `frontend/components/OnboardingModal.jsx` to save data to Supabase
+  - Modify handleComplete function to call updateProfile with all onboarding data
+  - Map role to display title (founder → "The Founder", etc.)
+  - Ensure skills array is properly formatted for database
+  - Add error handling and loading state during profile creation
+  - Show success message or redirect after successful profile creation
+  - Test complete onboarding flow: signup → onboarding → profile saved → dashboard
+  - _Requirements: 3.2_
+
+- [x] 6. Verify and enhance Profile Page save functionality
+
+
+
+
+  - Review existing handleSave function in `frontend/pages/Profile.jsx`
+  - Ensure all form fields are properly mapped to database schema
+  - Verify camelCase to snake_case conversion in updateProfile
+  - Test saving bio, location, title, social links
+  - Test adding/editing/removing experience entries
+  - Test adding/editing/removing education entries
+  - Test adding/editing/removing skills with levels
+  - Test adding/editing/removing URL Link
+  - Verify real-time updates trigger after save
+  - _Requirements: 7.1_
+
+- [ ] 7. Test real-time profile updates
+  - Verify `useRealtimeProfile` hook is working correctly
+  - Test ProfileModal real-time updates: open modal, edit profile in another tab, verify modal updates
+  - Test Profile Page real-time updates: open profile, edit in another tab, verify page updates
+  - Test with multiple browser tabs/windows simultaneously
+  - Verify subscription cleanup on component unmount
+  - Check for memory leaks or duplicate subscriptions
+  - _Requirements: 7.1, 7.2_
+
+- [ ] 8. Add profile validation and error handling
+  - Add validation for required fields (name, email)
+  - Add validation for URL formats (GitHub, LinkedIn, Portfolio)
+  - Add validation for skills array (non-empty strings)
+  - Show inline error messages for invalid fields
+  - Prevent save if validation fails
+  - Handle network errors gracefully
+  - Add retry mechanism for failed saves
+  - _Requirements: 3.2, 7.1_
+
+- [ ] 9. Implement user management API (FUTURE - Not in current scope)
+- [ ] 9.1 Create user service and controller
   - Create `backend/api/services/userService.js` with methods for creating, retrieving, updating user profiles
   - Create `backend/api/controllers/userController.js` with handlers for GET /users, GET /users/:id, PUT /users/:id, GET /users/:id/projects
   - Implement pagination for user listing
   - Implement user search functionality
   - _Requirements: 4.1, 4.2, 4.3_
 
-- [ ] 5.2 Create user routes and integrate with frontend
+- [ ] 9.2 Create user routes and integrate with frontend
   - Create `backend/api/routes/users.js` with all user endpoints
   - Create `frontend/services/api.js` with ApiService class and user methods (getUser, updateUser, getUsers)
   - Update frontend components to use API service instead of mock data
   - Add authentication token to all API requests
   - _Requirements: 4.1, 4.2, 4.3, 5.7, 5.8_
 
-- [ ] 6. Implement project management API
-- [ ] 6.1 Create project service and controller
+---
+
+## FUTURE TASKS (Not in current scope)
+
+The following tasks are part of the full Supabase integration but are not required for the current focus on user authentication and profile management:
+
+- [ ] 10. Implement project management API
+- [ ] 10.1 Create project service and controller
   - Create `backend/api/services/projectService.js` with methods for CRUD operations on projects, positions, and members
   - Create `backend/api/controllers/projectController.js` with handlers for all project endpoints
   - Implement project filtering by category, stage, and owner

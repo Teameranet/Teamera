@@ -13,7 +13,9 @@ function OnboardingModal({ onClose }) {
     location: '',
     interests: []
   });
-  const { updateProfile } = useAuth();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const { updateProfile, user } = useAuth();
 
   const steps = [
     {
@@ -40,6 +42,17 @@ function OnboardingModal({ onClose }) {
     { id: 'investor', label: 'The Investor', description: 'I\'m looking for promising startups to invest in' },
     { id: 'student', label: 'The Student', description: 'I want to learn and gain experience through projects' }
   ];
+
+  // Map role to display title for database
+  const getRoleDisplayTitle = (roleId) => {
+    const roleMap = {
+      'founder': 'The Founder',
+      'professional': 'The Professional',
+      'investor': 'The Investor',
+      'student': 'The Student'
+    };
+    return roleMap[roleId] || roleId;
+  };
 
   const skillOptions = [
     'React', 'Node.js', 'Python', 'JavaScript', 'TypeScript', 'UI/UX Design',
@@ -78,9 +91,38 @@ function OnboardingModal({ onClose }) {
     }
   };
 
-  const handleComplete = () => {
-    updateProfile(formData);
-    onClose();
+  const handleComplete = async () => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      // Prepare data for Supabase with proper formatting
+      const profileData = {
+        name: user?.name || user?.email?.split('@')[0] || 'User',
+        role: formData.role,
+        title: getRoleDisplayTitle(formData.role),
+        skills: formData.skills.filter(skill => skill && skill.trim() !== ''), // Ensure clean array
+        experience: formData.experience,
+        bio: formData.bio,
+        location: formData.location
+      };
+
+      // Call updateProfile which will upsert to Supabase
+      const result = await updateProfile(profileData);
+      
+      if (result.success) {
+        // Success - close modal and let user proceed to dashboard
+        onClose();
+      } else {
+        // Show error message
+        setError(result.error || 'Failed to save profile. Please try again.');
+        setLoading(false);
+      }
+    } catch (err) {
+      console.error('Error completing onboarding:', err);
+      setError('An unexpected error occurred. Please try again.');
+      setLoading(false);
+    }
   };
 
   const renderStepContent = () => {
@@ -214,13 +256,30 @@ function OnboardingModal({ onClose }) {
             </span>
           </div>
 
+          {error && (
+            <div className="error-message" style={{
+              padding: '12px',
+              marginBottom: '16px',
+              backgroundColor: '#fee',
+              border: '1px solid #fcc',
+              borderRadius: '8px',
+              color: '#c33'
+            }}>
+              {error}
+            </div>
+          )}
+
           <div className="step-content">
             {renderStepContent()}
           </div>
 
           <div className="step-actions">
             {currentStep > 0 && (
-              <button className="prev-btn" onClick={handlePrevious}>
+              <button 
+                className="prev-btn" 
+                onClick={handlePrevious}
+                disabled={loading}
+              >
                 <ChevronLeft size={20} />
                 Previous
               </button>
@@ -228,10 +287,26 @@ function OnboardingModal({ onClose }) {
             <button 
               className="next-btn" 
               onClick={handleNext}
-              disabled={!canProceed()}
+              disabled={!canProceed() || loading}
             >
-              {currentStep === steps.length - 1 ? 'Complete' : 'Next'}
-              {currentStep < steps.length - 1 && <ChevronRight size={20} />}
+              {loading ? (
+                <>
+                  <span style={{ marginRight: '8px' }}>Saving...</span>
+                  <div className="spinner" style={{
+                    width: '16px',
+                    height: '16px',
+                    border: '2px solid rgba(255,255,255,0.3)',
+                    borderTop: '2px solid white',
+                    borderRadius: '50%',
+                    animation: 'spin 0.8s linear infinite'
+                  }} />
+                </>
+              ) : (
+                <>
+                  {currentStep === steps.length - 1 ? 'Complete' : 'Next'}
+                  {currentStep < steps.length - 1 && <ChevronRight size={20} />}
+                </>
+              )}
             </button>
           </div>
         </div>

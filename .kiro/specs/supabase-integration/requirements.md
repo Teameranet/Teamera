@@ -54,12 +54,13 @@ This document outlines the requirements for integrating Supabase as the primary 
 #### Acceptance Criteria
 
 1. WHEN a user signs up with email and password, THE Authentication Service SHALL create a new user account and profile record
-2. WHEN a user signs in with valid credentials, THE Authentication Service SHALL return a session token
-3. WHEN a user signs in with Google OAuth, THE Authentication Service SHALL authenticate via Google provider
-4. WHEN a user signs in with Microsoft OAuth, THE Authentication Service SHALL authenticate via Microsoft provider
-5. THE Frontend Application SHALL store the session token securely in localStorage
-6. THE Backend API SHALL verify session tokens on protected routes
-7. WHEN a user logs out, THE Authentication Service SHALL invalidate the session token
+2. WHEN a user completes the onboarding modal, THE Frontend Application SHALL save all onboarding data to the profiles table
+3. WHEN a user signs in with valid credentials, THE Authentication Service SHALL return a session token
+4. WHEN a user signs in with Google OAuth, THE Authentication Service SHALL authenticate via Google provider
+5. WHEN a user signs in with Microsoft OAuth, THE Authentication Service SHALL authenticate via Microsoft provider
+6. THE Frontend Application SHALL store the session token securely in localStorage
+7. THE Backend API SHALL verify session tokens on protected routes
+8. WHEN a user logs out, THE Authentication Service SHALL invalidate the session token
 
 ### Requirement 4
 
@@ -126,12 +127,14 @@ This document outlines the requirements for integrating Supabase as the primary 
 
 #### Acceptance Criteria
 
-1. WHEN a new message is posted, THE Frontend Application SHALL receive the message via Supabase real-time subscription
-2. WHEN a task status changes, THE Frontend Application SHALL update the task list in real-time
-3. WHEN a file is uploaded, THE Frontend Application SHALL display the new file immediately
-4. WHEN a team member is added, THE Frontend Application SHALL update the team list in real-time
-5. THE Frontend Application SHALL subscribe to real-time changes when entering a collaboration space
-6. THE Frontend Application SHALL unsubscribe from real-time changes when leaving a collaboration space
+1. WHEN a user updates their profile, THE Frontend Application SHALL receive the updated profile data via Supabase real-time subscription
+2. WHEN viewing another user's profile in ProfileModal, THE Frontend Application SHALL display real-time updates to that profile
+3. WHEN a new message is posted, THE Frontend Application SHALL receive the message via Supabase real-time subscription
+4. WHEN a task status changes, THE Frontend Application SHALL update the task list in real-time
+5. WHEN a file is uploaded, THE Frontend Application SHALL display the new file immediately
+6. WHEN a team member is added, THE Frontend Application SHALL update the team list in real-time
+7. THE Frontend Application SHALL subscribe to real-time changes when entering a collaboration space
+8. THE Frontend Application SHALL unsubscribe from real-time changes when leaving a collaboration space
 
 ### Requirement 8
 

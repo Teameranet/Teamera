@@ -531,10 +531,12 @@ export const api = new ApiService()
 ### 7. Context Provider Updates
 
 **AuthContext Updates**:
-- Replace localStorage-based auth with Supabase Auth
-- Implement OAuth flows for Google and Microsoft
-- Handle session management and token refresh
-- Sync user profile data with backend API
+- Replace localStorage-based auth with Supabase Auth ✅ (Already implemented)
+- Implement OAuth flows for Google and Microsoft ✅ (Already implemented)
+- Handle session management and token refresh ✅ (Already implemented)
+- **Enhanced**: Save onboarding data directly to profiles table after signup
+- **Enhanced**: Ensure updateProfile creates profile if it doesn't exist (upsert pattern)
+- **Enhanced**: Fetch complete profile data including all fields from onboarding
 
 **ProjectContext Updates**:
 - Replace in-memory state with API calls
@@ -549,6 +551,58 @@ export const api = new ApiService()
 - Handle notification actions (read, delete)
 
 ### 8. Real-time Subscriptions
+
+**Profile Real-time (frontend/hooks/useRealtimeProfile.js)** ✅ (Already exists):
+```javascript
+import { useEffect } from 'react';
+import { supabase } from '../../src/lib/supabase';
+
+export const useRealtimeProfile = (userId, onUpdate) => {
+  useEffect(() => {
+    if (!userId) return;
+
+    const channel = supabase
+      .channel(`profile:${userId}`)
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'profiles',
+          filter: `id=eq.${userId}`
+        },
+        (payload) => {
+          onUpdate(payload.new);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [userId, onUpdate]);
+};
+```
+
+**Usage in ProfileModal**:
+```javascript
+// Subscribe to real-time updates for this profile
+useRealtimeProfile(user?.id, (updatedProfile) => {
+  setProfileData(updatedProfile);
+});
+```
+
+**Usage in Profile Page**:
+```javascript
+// Refresh user profile when it's updated
+const handleProfileUpdate = useCallback((updatedProfile) => {
+  if (user?.id) {
+    fetchUserProfile(user.id);
+  }
+}, [user?.id, fetchUserProfile]);
+
+useRealtimeProfile(user?.id, handleProfileUpdate);
+```
 
 **Chat Real-time (frontend/components/ChatTab.jsx)**:
 ```javascript
@@ -612,7 +666,146 @@ useEffect(() => {
 }, [projectId])
 ```
 
-### 9. File Storage Implementation
+### 9. OnboardingModal Integration
+
+**Current Implementation**:
+The OnboardingModal collects user data in 4 steps:
+1. Role selection (founder, professional, investor, student)
+2. Skills selection (multiple skills from predefined list)
+3. Experience level and location
+4. Bio and profile summary
+
+**Required Changes**:
+```javascript
+// In OnboardingModal.jsx
+const handleComplete = async () => {
+  // Prepare data for Supabase (convert to snake_case)
+  const profileData = {
+    role: formData.role,
+    skills: formData.skills,
+    experience: formData.experience,
+    bio: formData.bio,
+    location: formData.location,
+    title: getRoleDisplayTitle(formData.role) // Map role to display title
+  };
+
+  // Call updateProfile which will upsert to Supabase
+  const result = await updateProfile(profileData);
+  
+  if (result.success) {
+    onClose();
+  } else {
+    // Show error message
+    console.error('Failed to save profile:', result.error);
+  }
+};
+```
+
+**Database Schema for Profiles Table**:
+```sql
+CREATE TABLE profiles (
+  id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+  email TEXT UNIQUE NOT NULL,
+  name TEXT NOT NULL,
+  title TEXT,
+  bio TEXT,
+  role TEXT, -- 'founder', 'professional', 'investor', 'student'
+  skills TEXT[], -- Array of skill names
+  experience TEXT, -- '0-1', '2-3', '4-6', '7+'
+  location TEXT,
+  github_url TEXT,
+  linkedin_url TEXT,
+  portfolio_url TEXT,
+  education JSONB DEFAULT '[]'::jsonb,
+  work_experience JSONB DEFAULT '[]'::jsonb,
+  avatar_url TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Enable RLS
+ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
+
+-- Policies
+CREATE POLICY "Users can view all profiles"
+  ON profiles FOR SELECT
+  USING (true);
+
+CREATE POLICY "Users can update own profile"
+  ON profiles FOR UPDATE
+  USING (auth.uid() = id);
+
+CREATE POLICY "Users can insert own profile"
+  ON profiles FOR INSERT
+  WITH CHECK (auth.uid() = id);
+
+-- Trigger to update updated_at
+CREATE OR REPLACE FUNCTION update_updated_at_column()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.updated_at = NOW();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER update_profiles_updated_at
+  BEFORE UPDATE ON profiles
+  FOR EACH ROW
+  EXECUTE FUNCTION update_updated_at_column();
+```
+
+**AuthContext updateProfile Enhancement**:
+The existing updateProfile function already handles upsert logic:
+1. Checks if profile exists
+2. Updates if exists, inserts if not
+3. Converts camelCase to snake_case for database
+4. Returns updated profile data
+
+**Flow**:
+1. User signs up → Basic auth user created
+2. OnboardingModal appears → User fills in details
+3. User clicks "Complete" → updateProfile called
+4. Profile upserted to Supabase → Real-time updates triggered
+5. User redirected to dashboard with complete profile
+
+### 10. Profile Page Save Functionality
+
+**Current Implementation** ✅:
+The Profile page already has a comprehensive edit mode with save functionality:
+- Edit button toggles edit mode
+- Form fields for all profile data (bio, location, title, social links, skills, experience, education)
+- Save button calls `updateProfile` from AuthContext
+- Cancel button resets form data
+
+**Key Features**:
+1. **Inline Editing**: All fields editable in place
+2. **Add/Remove Items**: Dynamic addition/removal of experience and education entries
+3. **Skills Management**: Add/edit/remove skills with level and years
+4. **Social Links**: GitHub, LinkedIn, Portfolio URLs
+5. **Real-time Sync**: Changes saved to Supabase and reflected immediately
+
+**Save Flow**:
+```javascript
+const handleSave = async () => {
+  const result = await updateProfile(formData);
+  if (result.success) {
+    setIsEditing(false);
+    // Profile automatically updates via real-time subscription
+  } else {
+    console.error('Failed to update profile:', result.error);
+    // Show error message to user
+  }
+};
+```
+
+**Data Transformation**:
+The updateProfile function in AuthContext handles:
+- Converting camelCase (frontend) to snake_case (database)
+- Upserting profile (insert if not exists, update if exists)
+- Returning updated profile data
+- Triggering real-time updates to all subscribers
+
+### 11. File Storage Implementation
 
 **Storage Bucket Configuration**:
 ```javascript
