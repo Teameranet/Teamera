@@ -575,9 +575,23 @@ The major Problem is
 ------------------------------------------------
 Create A test case of User & delete it after testing
 -------------------------------------------------------
-The User should remains login after refreash the page after conplite the Sign UP
+Implement user session persistence so that:
+
+1. After a user completes signup and onboarding, they should stay logged in even after page refresh
+2. Use Supabase session management to maintain the authenticated state
+3. Handle page reloads without requiring re-login
+4. Store necessary user data in local storage or session storage
+5. Redirect authenticated users appropriately after refresh
+
+The solution should ensure a seamless experience where users don't have to log in again after completing registration.
 --------------------------------------------------------------
 For new users (signup): Opens onboarding modal
 For existing users (login): Just closes the modal and user is logged in
 ------------------------------------------------------
-create a simple test to verify the auth flow works.
+nodnode src/tests/manual-auth-test.js
+------------------------------------------------------------
+Integrate Supabase for 
+
+ - User can able to Sign Up/In (with OnboardingModal details) 
+
+- Update the Profilemodal & Profile Page on Real Time 
