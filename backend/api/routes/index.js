@@ -2,7 +2,7 @@ import express from 'express';
 import helloController from '../controllers/helloController.js';
 import contactController from '../controllers/contactController.js';
 import userController from '../controllers/userController.js';
-import { logger } from '../../backend/middleware/auth.js';
+import { logger } from '../../middleware/auth.js';
 
 const router = express.Router();
 

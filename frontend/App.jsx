@@ -85,7 +85,10 @@ function App() {
                   // Only show onboarding for new users without complete profiles
                   // Skip onboarding for User-1 (demo user)
                   if (userData.id !== '1' && (!userData.bio || !userData.skills || userData.skills.length === 0)) {
-                    handleModalState(setShowOnboarding, true);
+                    // Add a small delay to ensure session is fully set
+                    setTimeout(() => {
+                      handleModalState(setShowOnboarding, true);
+                    }, 500);
                   }
                 }}
               />

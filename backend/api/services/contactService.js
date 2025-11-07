@@ -1,4 +1,8 @@
-import { generateId, formatDate } from '../../backend/utils/helpers.js';
+import { randomUUID } from 'crypto';
+
+// Helper functions
+const generateId = () => randomUUID();
+const formatDate = (date) => new Date(date).toISOString();
 
 // In-memory storage for demo purposes
 const contactSubmissions = [];

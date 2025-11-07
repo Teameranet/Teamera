@@ -1,4 +1,4 @@
-import { successResponse, errorResponse, sanitizeInput } from '../../backend/utils/helpers.js';
+import { successResponse, errorResponse, sanitizeInput } from '../../utils/helpers.js';
 import contactService from '../services/contactService.js';
 
 const contactController = {

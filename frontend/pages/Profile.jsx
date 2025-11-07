@@ -1,8 +1,9 @@
 // Import necessary hooks and components
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Edit, MapPin, Calendar, Mail, Github as GitHub, Linkedin, Globe, User, Briefcase, Award, Settings, Eye, Plus, X, Check, ChevronDown, Users, Clock, Map, Trash2 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useProjects } from '../context/ProjectContext';
+import { useRealtimeProfile } from '../hooks/useRealtimeProfile';
 import ProjectCard from '../components/ProjectCard';
 import ProjectModal from '../components/ProjectModal';
 import CreateProjectModal from '../components/CreateProjectModal';
@@ -11,8 +12,18 @@ import './Profile.css';
 // Main Profile component
 function Profile() {
   // Auth and project context hooks
-  const { user, updateProfile } = useAuth();
+  const { user, updateProfile, fetchUserProfile, resetPassword } = useAuth();
   const { getUserProjects, updateProjectStage, editProject, deleteProject, leaveProject } = useProjects();
+
+  // Real-time profile updates
+  const handleProfileUpdate = useCallback((updatedProfile) => {
+    // Refresh user profile when it's updated
+    if (user?.id) {
+      fetchUserProfile(user.id);
+    }
+  }, [user?.id, fetchUserProfile]);
+
+  useRealtimeProfile(user?.id, handleProfileUpdate);
 
   // Function to map experience to skill level
   const mapExperienceToSkillLevel = (experience) => {
@@ -143,12 +154,14 @@ function Profile() {
   };
 
   // Handle password reset
-  // function: handleResetPassword, add API call to send reset password email here
-  const handleResetPassword = () => {
+  const handleResetPassword = async () => {
     if (user && user.email) {
-      // TODO: Add API call to send reset password link to user.email here
-      console.log(`Password reset link sent to ${user.email}`);
-      setResetPasswordMessage('Password reset link has been sent to your email.');
+      const result = await resetPassword(user.email);
+      if (result.success) {
+        setResetPasswordMessage('Password reset link has been sent to your email.');
+      } else {
+        setResetPasswordMessage('Unable to reset password. Please try again later.');
+      }
 
       // Clear message after 5 seconds
       setTimeout(() => {
@@ -335,11 +348,14 @@ function Profile() {
   };
 
   // Save profile changes
-  // function: handleSave, add API call to update user profile here
-  const handleSave = () => {
-    // Add API call to update user profile in backend here
-    updateProfile(formData);
-    setIsEditing(false);
+  const handleSave = async () => {
+    const result = await updateProfile(formData);
+    if (result.success) {
+      setIsEditing(false);
+    } else {
+      console.error('Failed to update profile:', result.error);
+      // You could show an error message here
+    }
   };
 
   // Cancel editing and reset formData to user data or defaults
