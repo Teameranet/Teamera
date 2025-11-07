@@ -138,11 +138,15 @@ export const AuthProvider = ({ children }) => {
       // Set session and user immediately
       setSession(data.session);
 
-      // Create basic user object from auth data
+      // Create basic user object from auth data with empty fields to trigger onboarding
       const basicUser = {
         id: data.user.id,
         email: email,
-        name: name
+        name: name,
+        bio: null,
+        skills: [],
+        location: null,
+        role: null
       };
       setUser(basicUser);
 
@@ -175,6 +179,7 @@ export const AuthProvider = ({ children }) => {
       }, 100);
 
       setShowAuthModal(false);
+      console.log('Signup successful, returning user:', basicUser);
       return { success: true, user: basicUser };
     } catch (error) {
       console.error('Signup error:', error);
