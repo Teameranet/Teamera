@@ -13,7 +13,7 @@ function OnboardingModal({ onClose }) {
     location: '',
     interests: []
   });
-  const { updateProfile, isAuthenticated, user: authUser } = useAuth();
+  const { updateProfile } = useAuth();
 
   const steps = [
     {
@@ -78,28 +78,9 @@ function OnboardingModal({ onClose }) {
     }
   };
 
-  const handleComplete = async () => {
-    // Check if user is authenticated before updating profile
-    if (!isAuthenticated || !authUser) {
-      console.error('Failed to update profile: User not authenticated');
-      // Wait a bit and retry (in case of race condition)
-      await new Promise(resolve => setTimeout(resolve, 500));
-      const result = await updateProfile(formData);
-      if (result.success) {
-        onClose();
-      } else {
-        console.error('Failed to update profile:', result.error);
-      }
-      return;
-    }
-
-    const result = await updateProfile(formData);
-    if (result.success) {
-      onClose();
-    } else {
-      console.error('Failed to update profile:', result.error);
-      // You could show an error message here
-    }
+  const handleComplete = () => {
+    updateProfile(formData);
+    onClose();
   };
 
   const renderStepContent = () => {

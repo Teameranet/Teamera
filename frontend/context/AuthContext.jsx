@@ -1,5 +1,4 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { supabase } from '../../src/lib/supabase';
 
 const AuthContext = createContext();
 
@@ -15,333 +14,133 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showAuthModal, setShowAuthModal] = useState(false);
-  const [session, setSession] = useState(null);
-  const [pendingUserId, setPendingUserId] = useState(null); // Store user ID temporarily
+  
+  /* Demo users disabled
+  const demoUsers = [];
+  */
 
   useEffect(() => {
-    // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      if (session?.user) {
-        fetchUserProfile(session.user.id);
-      } else {
-        setLoading(false);
-      }
-    });
-
-    // Listen for auth changes
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (_event, session) => {
-      setSession(session);
-      if (session?.user) {
-        await fetchUserProfile(session.user.id);
-      } else {
-        setUser(null);
-        setLoading(false);
-      }
-    });
-
-    return () => subscription.unsubscribe();
+    // Check for existing user session
+    const savedUser = localStorage.getItem('solvearn_user');
+    if (savedUser) {
+      setUser(JSON.parse(savedUser));
+    }
+    setLoading(false);
   }, []);
 
-  // Fetch user profile from Supabase
-  const fetchUserProfile = async (userId) => {
-    try {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', userId)
-        .maybeSingle();
-
-      if (error) {
-        console.error('Error fetching profile:', error);
-        setLoading(false);
-        return null;
-      }
-
-      if (data) {
-        setUser(data);
-      }
-      setLoading(false);
-      return data;
-    } catch (error) {
-      console.error('Error fetching profile:', error);
-      setLoading(false);
-      return null;
-    }
+  const login = async (userData) => {
+    // Store profile data if it's a new user or has extended profile info
+    const storedUser = await storeUserProfile(userData);
+    setUser(storedUser);
+    localStorage.setItem('solvearn_user', JSON.stringify(storedUser));
+    setShowAuthModal(false);
   };
 
-  const login = async (email, password) => {
-    try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (error) throw error;
-
-      // Set session and user immediately
-      setSession(data.session);
-
-      // Try to fetch profile with timeout
-      let profile = null;
-      try {
-        const profilePromise = fetchUserProfile(data.user.id);
-        const timeoutPromise = new Promise((_, reject) =>
-          setTimeout(() => reject(new Error('Profile fetch timeout')), 5000)
-        );
-        profile = await Promise.race([profilePromise, timeoutPromise]);
-      } catch (profileError) {
-        console.warn('Could not fetch profile, using auth user data:', profileError);
-        // Set basic user data from auth
-        setUser({
-          id: data.user.id,
-          email: data.user.email,
-          name: data.user.user_metadata?.name || data.user.email.split('@')[0]
-        });
-      }
-
-      setShowAuthModal(false);
-      return { success: true, user: profile || data.user };
-    } catch (error) {
-      console.error('Login error:', error);
-      return { success: false, error: error.message };
-    }
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem('solvearn_user');
   };
 
-  const signup = async (email, password, name) => {
+  const signup = async (userData) => {
     try {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            name: name,
-          },
+      const response = await fetch('/api/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
+        body: JSON.stringify(userData),
       });
 
-      if (error) throw error;
-
-      // Check if email confirmation is required
-      if (!data.session) {
-        // Email confirmation is required
-        return {
-          success: true,
-          user: data.user,
-          requiresEmailConfirmation: true,
-          message: 'Please check your email to confirm your account before logging in.'
-        };
+      if (response.ok) {
+        const result = await response.json();
+        const newUser = result.data;
+        await login(newUser);
+        return { success: true, user: newUser };
+      } else {
+        const error = await response.json();
+        return { success: false, error: error.message };
       }
-
-      // Set session and user immediately
-      setSession(data.session);
-
-      // Create basic user object from auth data with empty fields to trigger onboarding
-      const basicUser = {
-        id: data.user.id,
-        email: email,
-        name: name,
-        bio: null,
-        skills: [],
-        location: null,
-        role: null
-      };
-      setUser(basicUser);
-
-      // Try to create profile in background (don't wait for it)
-      setTimeout(async () => {
-        try {
-          // Check if profile exists
-          const { data: existingProfile } = await supabase
-            .from('profiles')
-            .select('id')
-            .eq('id', data.user.id)
-            .maybeSingle();
-
-          if (!existingProfile) {
-            // Create profile if it doesn't exist
-            await supabase
-              .from('profiles')
-              .insert({
-                id: data.user.id,
-                email: email,
-                name: name
-              });
-          }
-
-          // Fetch the complete profile
-          await fetchUserProfile(data.user.id);
-        } catch (profileError) {
-          console.warn('Background profile creation failed:', profileError);
-        }
-      }, 100);
-
-      setShowAuthModal(false);
-      console.log('Signup successful, returning user:', basicUser);
-      return { success: true, user: basicUser };
     } catch (error) {
       console.error('Signup error:', error);
-      return { success: false, error: error.message };
-    }
-  };
-
-  const logout = async () => {
-    try {
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
-      setUser(null);
-      setSession(null);
-    } catch (error) {
-      console.error('Logout error:', error);
-    }
-  };
-
-  const signInWithGoogle = async () => {
-    try {
-      const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: `${window.location.origin}`,
-        },
-      });
-
-      if (error) throw error;
-      return { success: true };
-    } catch (error) {
-      console.error('Google sign-in error:', error);
-      return { success: false, error: error.message };
-    }
-  };
-
-  const signInWithMicrosoft = async () => {
-    try {
-      const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: 'azure',
-        options: {
-          redirectTo: `${window.location.origin}`,
-        },
-      });
-
-      if (error) throw error;
-      return { success: true };
-    } catch (error) {
-      console.error('Microsoft sign-in error:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Network error occurred' };
     }
   };
 
   const updateProfile = async (profileData) => {
     try {
-      // Get current user directly from Supabase (most reliable method)
-      const { data: { user: currentUser }, error: userError } = await supabase.auth.getUser();
+      // Update locally first for immediate UI feedback
+      const updatedUser = { ...user, ...profileData };
+      setUser(updatedUser);
+      localStorage.setItem('solvearn_user', JSON.stringify(updatedUser));
 
-      // Fallback to session if getUser fails
-      let userId, userEmail;
-      if (currentUser) {
-        userId = currentUser.id;
-        userEmail = currentUser.email;
-      } else {
-        // Try to get from session
-        const { data: { session: currentSession } } = await supabase.auth.getSession();
-        userId = currentUser?.id || session?.user?.id || currentSession?.user?.id;
-        userEmail = currentUser?.email || session?.user?.email || currentSession?.user?.email;
-      }
+      // Sync with backend if user has an ID
+      if (user?.id) {
+        const response = await fetch(`/api/users/${user.id}/profile`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(profileData),
+        });
 
-      if (!userId) {
-        // Last attempt: wait a bit and retry (for race conditions after signup)
-        await new Promise(resolve => setTimeout(resolve, 300));
-        const { data: { user: retryUser } } = await supabase.auth.getUser();
-        if (retryUser) {
-          userId = retryUser.id;
-          userEmail = retryUser.email;
+        if (response.ok) {
+          const result = await response.json();
+          const backendUser = result.data;
+          setUser(backendUser);
+          localStorage.setItem('solvearn_user', JSON.stringify(backendUser));
+          return { success: true, user: backendUser };
+        } else {
+          console.error('Failed to sync profile with backend');
+          return { success: true, user: updatedUser }; // Still return success for local update
         }
       }
 
-      if (!userId) {
-        console.error('No user ID found. User:', user, 'Session:', session, 'Current User:', currentUser);
-        return { success: false, error: 'No user logged in' };
-      }
-
-      // Prepare data for Supabase (convert camelCase to snake_case)
-      const dbData = {
-        name: profileData.name,
-        bio: profileData.bio,
-        location: profileData.location,
-        title: profileData.title,
-        role: profileData.role,
-        experience: profileData.experience,
-        github_url: profileData.githubUrl,
-        linkedin_url: profileData.linkedinUrl,
-        portfolio_url: profileData.portfolioUrl,
-        skills: profileData.skills || [],
-        education: profileData.education || [],
-        work_experience: profileData.experience || [],
-      };
-
-      // First, check if profile exists
-      const { data: existingProfile } = await supabase
-        .from('profiles')
-        .select('id')
-        .eq('id', userId)
-        .maybeSingle();
-
-      let result;
-      if (existingProfile) {
-        // Update existing profile
-        result = await supabase
-          .from('profiles')
-          .update(dbData)
-          .eq('id', userId)
-          .select()
-          .single();
-      } else {
-        // Insert new profile if it doesn't exist
-        result = await supabase
-          .from('profiles')
-          .insert({ ...dbData, id: userId, email: userEmail })
-          .select()
-          .single();
-      }
-
-      if (result.error) throw result.error;
-
-      setUser(result.data);
-      return { success: true, user: result.data };
+      return { success: true, user: updatedUser };
     } catch (error) {
       console.error('Profile update error:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Failed to update profile' };
     }
   };
 
-  const resetPassword = async (email) => {
+  // Store new user profile data on signup/signin
+  const storeUserProfile = async (userData) => {
     try {
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/reset-password`,
-      });
+      if (userData.id) {
+        // If user has ID, sync with backend
+        const response = await fetch(`/api/users/${userData.id}/profile`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(userData),
+        });
 
-      if (error) throw error;
-      return { success: true };
+        if (response.ok) {
+          const result = await response.json();
+          return result.data;
+        }
+      }
+      return userData;
     } catch (error) {
-      console.error('Password reset error:', error);
-      return { success: false, error: error.message };
+      console.error('Error storing user profile:', error);
+      return userData; // Return original data if backend fails
     }
   };
+  
+  // Demo login disabled
+  // const loginAsDemoUser = (userId) => {}
 
   const value = {
     user,
-    session,
     login,
     logout,
     signup,
     updateProfile,
-    resetPassword,
-    signInWithGoogle,
-    signInWithMicrosoft,
-    fetchUserProfile,
+    storeUserProfile,
     loading,
-    isAuthenticated: !!user && !!session,
+    isAuthenticated: !!user,
+    // demoUsers,
+    // loginAsDemoUser,
     showAuthModal,
     setShowAuthModal
   };

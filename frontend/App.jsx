@@ -81,19 +81,11 @@ function App() {
               <AuthModal 
                 onClose={() => handleModalState(setShowAuthModal, false)}
                 onSuccess={(userData) => {
-                  console.log('Auth onSuccess called with userData:', userData);
                   handleModalState(setShowAuthModal, false);
                   // Only show onboarding for new users without complete profiles
                   // Skip onboarding for User-1 (demo user)
-                  const shouldShowOnboarding = userData.id !== '1' && (!userData.bio || !userData.skills || userData.skills.length === 0);
-                  console.log('Should show onboarding:', shouldShowOnboarding);
-                  
-                  if (shouldShowOnboarding) {
-                    // Add a small delay to ensure session is fully set
-                    setTimeout(() => {
-                      console.log('Opening onboarding modal');
-                      handleModalState(setShowOnboarding, true);
-                    }, 500);
+                  if (userData.id !== '1' && (!userData.bio || !userData.skills || userData.skills.length === 0)) {
+                    handleModalState(setShowOnboarding, true);
                   }
                 }}
               />
