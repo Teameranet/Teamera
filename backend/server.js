@@ -1,17 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
-import apiRoutes from './api/routes/index.js';
-import { testConnection } from './config/supabase.js';
-
-// Get the directory name of the current module
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-// Load environment variables from backend/.env
-dotenv.config({ path: join(__dirname, '.env') });
+import apiRoutes from '../api/routes/index.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -50,12 +39,10 @@ app.use('*', (req, res) => {
   });
 });
 
-app.listen(PORT, async () => {
+app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
   console.log(`📍 Health check: http://localhost:${PORT}/health`);
   console.log(`🔌 API endpoints: http://localhost:${PORT}/api`);
-  console.log(`\n🔗 Testing Supabase connection...`);
-  await testConnection();
 });
 
 export default app;

@@ -1,10 +1,5 @@
-import User from '../../models/User.js';
-import { successResponse, errorResponse } from '../../utils/helpers.js';
-
-// Async handler wrapper
-const asyncHandler = (fn) => (req, res, next) => {
-  Promise.resolve(fn(req, res, next)).catch(next);
-};
+import User from '../../backend/models/User.js';
+import { successResponse, errorResponse, asyncHandler } from '../../backend/utils/helpers.js';
 
 // In-memory storage (demo users removed)
 let users = [];

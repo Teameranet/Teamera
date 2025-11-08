@@ -103,7 +103,7 @@ function AuthModal({ onClose, onSuccess }) {
     <div className="modal-overlay" onClick={onClose}>
       <div className="auth-modal" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
-          <h2>{isLogin ? 'Welcome Back' : 'Join Teamera.net'}</h2>
+          <h2>{isLogin ? 'Welcome Back' : 'Join Squad.net'}</h2>
           <button className="close-btn" onClick={onClose}>
             <span>×</span>
           </button>
