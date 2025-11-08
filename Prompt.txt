@@ -568,9 +568,7 @@ I see! The acceptApplication and rejectApplication functions are only updating l
 Integrate Supabase into this project for data storage & connect frontend to backend to API integrate
 -------------------------------------------
 The major Problem is 
-
-- On SignUp Section After Click on Create Account  User cannot proceed to onboarding  model immediately (same issue with SignIn section)
-
+- On SignUp Section After Click on Create Account  User cannot proceed to onboarding  model immediately (The same issue with SignIn section)
 - After Click on Complete button it is Freeze on onboarding  model
 ------------------------------------------------
 Create A test case of User & delete it after testing
@@ -604,4 +602,9 @@ Integrate The Supabase with Sign Up/In modal
 ** The Flow is** 
 - For new users (signup): Opens onboarding modal
 - For existing users (login): Just closes the modal and user is logged in
+Ensure that After a user completes signup and onboarding, Or Signin they should stay logged in even after page refresh
+----------------------------------------------------------------
+Connect & Integrate the Supabase with
+User can able to Sign Up/In (with OnboardingModal details)
+Update the Profilemodal & Profile Page on Real Time
 Ensure that After a user completes signup and onboarding, Or Signin they should stay logged in even after page refresh
