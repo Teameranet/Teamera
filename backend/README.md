@@ -1,6 +1,6 @@
-# Squad Net Backend
+# Teamera Net Backend
 
-A complete Node.js + Express + MongoDB backend for the Squad Net collaborative platform.
+A complete Node.js + Express + MongoDB backend for the Teamera Net collaborative platform.
 
 ## Features
 
@@ -40,8 +40,8 @@ PORT=5000
 NODE_ENV=development
 
 # Database Configuration
-MONGODB_URI=mongodb://localhost:27017/squad-net
-# For MongoDB Atlas, use: mongodb+srv://username:password@cluster.mongodb.net/squad-net
+MONGODB_URI=mongodb://localhost:27017/Teamera-net
+# For MongoDB Atlas, use: mongodb+srv://username:password@cluster.mongodb.net/Teamera-net
 
 # JWT Configuration
 JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
@@ -60,7 +60,7 @@ RATE_LIMIT_MAX_REQUESTS=100
 #### Option A: Local MongoDB
 1. Install MongoDB locally
 2. Start MongoDB service
-3. Use `mongodb://localhost:27017/squad-net` as MONGODB_URI
+3. Use `mongodb://localhost:27017/Teamera-net` as MONGODB_URI
 
 #### Option B: MongoDB Atlas (Recommended)
 1. Create a free account at [MongoDB Atlas](https://www.mongodb.com/atlas)

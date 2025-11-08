@@ -50,7 +50,7 @@ function Home({ onAuthClick }) {
       <section id="features" className="our-features-section">
         <div className="features-header">
           <p className="features-label">OUR FEATURES</p>
-<h2 className="features-title">See Your Journey With Squad.net</h2>
+<h2 className="features-title">See Your Journey With Teamera.net</h2>
           <p className="features-subtitle">
             From user onboarding to project collaboration, our comprehensive platform streamlines every step of your startup journey with integrated tools and community support.
           </p>
