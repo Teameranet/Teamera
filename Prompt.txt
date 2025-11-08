@@ -595,3 +595,10 @@ Integrate Supabase for
  - User can able to Sign Up/In (with OnboardingModal details) 
 
 - Update the Profilemodal & Profile Page on Real Time 
+--------------------------------------------------------------
+
+Connect The Supabase with
+- User can able to Sign Up/In (with OnboardingModal details)
+- User coluld able to Login Properly
+- Update the Profilemodal & Profile Page on Real Time
+Ensure that After a user completes signup and onboarding, Or Signin they should stay logged in even after page refresh
