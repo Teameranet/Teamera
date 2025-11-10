@@ -648,10 +648,31 @@ Project appears in user's owned projects
 All data persists across sessions
 -------------------------------------------------------------
 How to fix this Performance  Warning Message
-what about  'File name'
+in  'File name'
 How to fix this Security Advisor Warning Message
 -----------------------------------------------------------
 Display the user full name  on the profile page which user filled on SignUp section in Input field instead of the email address Name.
 
 ------------
 In DB the full name is null intigrate that Full name in 'AuthModal' & display that full name in profile page 'user-info' instent of email id name & store In DB
+--------------------------------------------------------------
+## Integrate the Supabase with authentication Modal according System Flow
+
+-  User can able to Sign Up with OnboardingModal details 
+
+-  Update the Profilemodal & Profile Page on Real Time as per account creation with OnboardingModal details 
+
+- For new users (signup): Opens onboarding modal
+
+- For existing users (login): User is logged in
+
+- Ensure that After a user completes signup and onboarding, Or Signin they should stay logged in even after page refresh
+
+-  Intigrate that Full Name on 'AuthModal' & display that full name on Profile page & Navbar in 'user-info' instent of email id name & Store In DB
+
+- After user  edit there Profile  Update the  Profilemodal on Real Time & store in DB
+
+- Create a only 1 sql file for Authentication &  Profile Page with edit  as per System Flow
+
+- Dont Create a such .md Files
+
