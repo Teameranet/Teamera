@@ -1,4 +1,4 @@
-## Redesign the home page  as per attach file accoddting to my UI Design System colour 
+## Redesign the home page  as per attach file accoddting to my UI Design System colour
 
 ## Updated the hero section with:
 -New title and subtitle
@@ -6,9 +6,9 @@
 -Removed floating cards ' Innovative Ideas , Startup Success , Dream Teams
 'for a cleaner look
 -----------------------------------------------------------------
-## Redesign the home page  as per attach file accoddting to my UI Design System colour 
+## Redesign the home page  as per attach file accoddting to my UI Design System colour
 - Change a hero section layout
-- Write a content as per attach file  till 'Built for every type of entrepreneur' section with bold font 
+- Write a content as per attach file  till 'Built for every type of entrepreneur' section with bold font
 - Removed floating cards ' Innovative Ideas , Startup Success , Dream Teams
 'for a cleaner look
 
@@ -63,7 +63,7 @@ Build your network
 Develop practical skills" as it is dont need to change
 
 ------------------------
-- Redesign the banner sestion  responsive  it will take the first character of that name and display it in the avatar circle. ensure that match as per attach image 
+- Redesign the banner sestion  responsive  it will take the first character of that name and display it in the avatar circle. ensure that match as per attach image
 - Ensure 'Message & Edit'  button should be down side of Icon on mobile Screen
 ----------------------------------------------
 
@@ -169,22 +169,22 @@ Consistent sizing across all items
 --------------------------
 now design  matches the attached screenshots, with user initials displayed in avatars, proper tabs navigation, and modern UI styling. The component will automatically select the first available project when opened and allows users to collaborate in real-time across all four areas of functionality. For different 2 project
 ------------------------------
-## On CollaborationSpace.jsx Display 2 project  appropriate messages if no projects exist selected option 
-- Switch between tabs to access chat, tasks, files, or team management. Use the invite modal to add new members by entering their email address. All actions are designed for seamless, real-time teamwork. All actions are designed for seamless, real-time teamwork with scrollable 
+## On CollaborationSpace.jsx Display 2 project  appropriate messages if no projects exist selected option
+- Switch between tabs to access chat, tasks, files, or team management. Use the invite modal to add new members by entering their email address. All actions are designed for seamless, real-time teamwork. All actions are designed for seamless, real-time teamwork with scrollable
 - Chat: Communicate in real-time with your team. Type your message and send it instantly. View team members' messages, likes, and replies.
 - Tasks: Manage project tasks. Create new tasks by entering a title, assigning a team member, setting a due date, and choosing a priority. View all tasks with their status, priority, and assignee.
 - Files: Share and manage project files. Upload new files, view shared files, and download or manage them as needed.
 - Team: See all team members, their roles, and contact information. Invite new members by email and share the project link for easy collaboration.
-- Ensure that ' Chat,Tasks, Files , Team ' should match with attach Image  with scrollable 
+- Ensure that ' Chat,Tasks, Files , Team ' should match with attach Image  with scrollable
 *********************************************************
 Display 2 project  appropriate messages if no projects exist
--  Choice the project from droupdown & Switch between tabs to access chat, tasks, files, or team management. Use the invite modal to add new members by entering their email address. All actions are designed for seamless, real-time teamwork with scrollable 
+-  Choice the project from droupdown & Switch between tabs to access chat, tasks, files, or team management. Use the invite modal to add new members by entering their email address. All actions are designed for seamless, real-time teamwork with scrollable
 - Chat: Communicate in real-time with your team. Type your message and send it instantly. View team members' messages, likes, and replies.
 - Tasks: Manage project tasks. Create new tasks by entering a title, assigning a team member, setting a due date, and choosing a priority. View all tasks with their status, priority, and assignee.
 - Files: Share and manage project files. Upload new files, view shared files, and download or manage them as needed.
 - Team: See all team members, their roles, and contact information. Invite new members by email and share the project link for easy collaboration.
 ----------------------------------------
-- Redesign the banner sestion  responsive  it will take the first character of that name and display it in the avatar circle. ensure that match as per attach image 
+- Redesign the banner sestion  responsive  it will take the first character of that name and display it in the avatar circle. ensure that match as per attach image
 - Ensure 'Message & Edit'  button should be down side of Icon on mobile Screen
 ----------------------------------------
 Were profile Image is there replace  with user initials displayed in avatars, proper tabs navigation, and modern UI styling. The component will automatically select the user first letter from there Name allows users to collaborate in real-time across all four areas of functionality as image
@@ -202,13 +202,13 @@ Tasks: Displays task management with the ability to create new tasks
 Files: Shows shared files with download options
 Team: Displays team members with their roles & (founder of project)  only admin have to access for remove or add the team member only .
 -----------------------------------------------
-## After User-1 selected specific project from dropdown list  Design  a tabs with resopnsive & scrollable functional and match the design shown in the images: 
+## After User-1 selected specific project from dropdown list  Design  a tabs with resopnsive & scrollable functional and match the design shown in the images:
 Chat: Shows team messages with user avatars, likes, and replies
 Tasks: Displays task management with the ability to create new tasks
 Files: Shows shared files with download options
-Team: Displays team members with their roles & (founder of project)  only admin have to access for remove or add the team member only 
-- Create a seprate file for all tabs in with resopnsive & scrollable functional & Ensure style should be as per attach file 
-@CollaborationSpace.jsx 
+Team: Displays team members with their roles & (founder of project)  only admin have to access for remove or add the team member only
+- Create a seprate file for all tabs in with resopnsive & scrollable functional & Ensure style should be as per attach file
+@CollaborationSpace.jsx
 -------------------------------------------
 ChatTab.jsx & ChatTab.css: Handles the team chat functionality with user avatars, messages, likes, and replies.
 TasksTab.jsx & TasksTab.css: Manages task creation and display with priority indicators and status tracking.
@@ -222,24 +222,24 @@ Tasks: Displays task management with the ability to create new tasks
 Files: Shows shared files with download options
 Team: Displays team members with their roles & (founder of project)  only admin have to access for remove or add the team member only .
 ------------------------------------------------
-## Redesign the Dashboard as following points Ensure that UI design layout match with attach image file 
-- Quick Actions: Use the top bar  Welcome to your Dashboard  < User name > !   
+## Redesign the Dashboard as following points Ensure that UI design layout match with attach image file
+- Quick Actions: Use the top bar  Welcome to your Dashboard  < User name > !
 - My Projects: Browse your current and past projects, check their status, team size, applications, views, and last activity. Quickly open collaboration on any project.
-- Recent Applications: Review the latest applications to your projects, see applicant details, skills, and take action to accept or reject pending applications. 
-- Save : Show the project after click on bookmark on project Card 
+- Recent Applications: Review the latest applications to your projects, see applicant details, skills, and take action to accept or reject pending applications.
+- Save : Show the project after click on bookmark on project Card
 - Upcoming Events: Never miss a beat with a sidebar listing upcoming hackathons, meetings, and networking events, each with date, type, and status.
 Navigate between sections using the clear cards and sidebar. All information is organized for quick access and efficient project management.
 ----------------------------------------------
-## Redesign the Dashboard as following points Ensure that UI design layout match with attach image file 
+## Redesign the Dashboard as following points Ensure that UI design layout match with attach image file
 1.Dashboard Header:
 - Added a beautiful blue gradient banner with "Welcome back, [User Name]!" message
 - Included a "Message" button in the top-right corner after user click show CollaborationSpace model
 2.Projects Section:
-- Show the project cards (bookmark feature) which user has been save as favorite  
+- Show the project cards (bookmark feature) which user has been save as favorite
 - Implemented a clean card-based layout for projects
 3.Recent Applications Section:
-- Shows applications with applicant details, skills, and project name 
-- Admin can view there profile & can also send message to user 
+- Shows applications with applicant details, skills, and project name
+- Admin can view there profile & can also send message to user
 - Includes status badges (PENDING, ACCEPTED, REJECTED)
 - For pending applications, displays Accept/Reject action buttons
 4.Responsive Design:
@@ -248,20 +248,20 @@ Navigate between sections using the clear cards and sidebar. All information is 
 -----------------------------
 ## Remove  the Applications  section from dashboard
 ## Recent Applications Section:
-- Shows applications with applicant details, skills, and project name 
-- Admin can view there profile & can also send message to user 
+- Shows applications with applicant details, skills, and project name
+- Admin can view there profile & can also send message to user
 - Includes status badges (PENDING, ACCEPTED, REJECTED)
 - For pending applications, displays Accept/Reject action buttons
-- Use image profile to user avatars 
+- Use image profile to user avatars
 -----------------------------
 
 
 -----------
 ## Create User Avatar Component add following functionality :
-- Create a  User avatar component as per used on Navbar page 
+- Create a  User avatar component as per used on Navbar page
 - User avatar component should be  show the first letter of user name
 - Apply User avatar component on all places where Profile Image shown & User avatar component used
-- Ensure Use Avatar match with proper show on Navigation bar & Profile page 
+- Ensure Use Avatar match with proper show on Navigation bar & Profile page
 
 ## Create User Avatar Component
 - The component should be implemented in all places where user avatars are shown in Navigation bar page
@@ -273,9 +273,9 @@ Navigate between sections using the clear cards and sidebar. All information is 
 - Support different avatar sizes through props
 - Handle missing/invalid profile images gracefully
 - Follow UI design system colors and styling
-- Ensure Use Avatar match with proper show on Navigation bar & Profile page 
+- Ensure Use Avatar match with proper show on Navigation bar & Profile page
 -----------------
-- On this Application Management still showing me old UserAvatar 
+- On this Application Management still showing me old UserAvatar
 - Update with New UserAvatar component
 ----------------------------------------
 - All elements (headline, subtitle, call-to-action buttons, trust indicators/logos) are aligned and spaced exactly as shown in the image According to my Design System  .
@@ -288,7 +288,7 @@ Navigate between sections using the clear cards and sidebar. All information is 
 - The section should be fully responsive, maintaining alignment and spacing on different screen sizes.
 - If the design includes a form, ensure all form fields and buttons are styled and spaced consistently with the rest of the hero section
 --------------------------
-## Redesign CTA Section layout as per attach image file and match with my design System 
+## Redesign CTA Section layout as per attach image file and match with my design System
 1. Header Section:
 - A main heading: "Build & Manage Teams"
 - A subheading: "The most powerful collaboration platform that connects developers, designers, and innovators. Track project progress and categorize tasks so you can see where your team's efforts are focused."
@@ -327,12 +327,12 @@ Customize things easily (with a settings/customize icon)
 Filter categories fast (with a filter icon)
 Get Project Started (with a chart/project icon)
 -------------------------------------
--  Create a simple new 'Community' page , Teamera.net, based on my design System 
-- According to my design System 
-- Ensure the layout & element  should match with attach image file 
+-  Create a simple new 'Community' page , Teamera.net, based on my design System
+- According to my design System
+- Ensure the layout & element  should match with attach image file
 - Shared files in messages should display a file-type icon, the filename, and its size
-- after click on user avatar or name show user profile on popup model 
-- navgate only from footer 
+- after click on user avatar or name show user profile on popup model
+- navgate only from footer
 -------------------------------------------------
 User Prompt for Community Page Development:
 
@@ -407,13 +407,13 @@ The page should feel like a professional developer community platform where user
 - In 'Open Positions' section give input field for open position (already have)  give dropdown option for 'Required skills for this position'
 - Give Cheack box ' Paid or Unpaid' (that Should be display on top- right side of spefices  open position area
 - Ensure that on project card instent of display skills display position name user added while cerate a peoject
-- Updated the project preview in the final step to show positions correctly with Added styling for the paid/unpaid status in both the form and the 
+- Updated the project preview in the final step to show positions correctly with Added styling for the paid/unpaid status in both the form and the
 ---------------------------
-- Create a User profile page information base of user insert details on SignUp model ensure that should match SignUp  information base of user insert details 
-- If there is more than one open position user should must be selected one & apply one position at a time 
-- After Applying the project show tost notifucation on down side 'Your Application has been send' & redireact to project page again 
+- Create a User profile page information base of user insert details on SignUp model ensure that should match SignUp  information base of user insert details
+- If there is more than one open position user should must be selected one & apply one position at a time
+- After Applying the project show tost notifucation on down side 'Your Application has been send' & redireact to project page again
 - On Dashboard -> application section :
- if user click on accept button option the user should be atumoticaly add in spectifed collabration space 
+ if user click on accept button option the user should be atumoticaly add in spectifed collabration space
  -------------------------------
  ## redesign the profile-banner as per attach image file accoding to system nd ensure that match layout & icon as per attach image
  --------------------------------------------
@@ -437,7 +437,7 @@ The page should feel like a professional developer community platform where user
 ## implemented the feature in the Dashboard to add an "Application Management" section with a "Received"
 -  Application Management Section: There's already an "Applications" tab in the dashboard
 -  Received Applications: Shows applications received for projects owned by the current user
--  
+-
 ------------------------------------
 ## implemented the feature in the Dashboard to add an "Application Management" section with
  - If any user created a project and another Users can apply for specific positions within projects
@@ -446,13 +446,13 @@ The page should feel like a professional developer community platform where user
 ## implemented the feature in the Dashboard to add an "Application Management" section with
 - Received Applications: Shows applications submitted by the current user related to specific positions within projects
 --------------------------------------------
-## implemented the feature in the #NotificationModal.jsx 
+## implemented the feature in the #NotificationModal.jsx
 
 - Application Acceptance Notifications: When a project owner accepts an application, the applicant receives a notification like "You had 'ProjectName & Position' successfully accepted"
 
 - New Application Notifications: When someone applies to a project, the project owner gets notified with "New application received for 'ProjectName' project"
 
-## Update the Notification Badge on navbar  
+## Update the Notification Badge on navbar
 
 - Shows real count all messages are viewed
 -------------------------------------------
@@ -460,7 +460,7 @@ Make Sure That only the project owner  should gets: "New application received fo
 
 Implemented in ProjectModal.jsx when applications are submitted
 ---------------------------------------------
-When User Sign/In it showing 'member' instent of the show the 'user-title'  as per  on profile page  on profilemodal  
+When User Sign/In it showing 'member' instent of the show the 'user-title'  as per  on profile page  on profilemodal
 --------------------------------------------
 When a project application is accepted, the user should be added to the project owner's "Collaboration Space" instead of showing "Member"
 Show "position-header" only for project owners
@@ -515,7 +515,7 @@ Project filtering → Only shows messages for selected project
 ------------------------------------------
 Move the 'social-auth' button downside of 'form-options' 'auth-form' And add 'divider' befor the button
 ---------------------------------------
-comments down the code of Demo User (User 1 & User 2) end to end  
+comments down the code of Demo User (User 1 & User 2) end to end
 -----------------------------------------------
 Setup all api end to end point with Frontend & Backend & Set Up proper Flow & store data in mongodb of
 
@@ -534,40 +534,40 @@ Setup all api end to end point with Frontend & Backend & Set Up proper Flow & st
  I want to connect the supabase to this project Give me the Step to connect the supabase & Good Prompt
 
 --------------------------------------------
- Setup all Backend & connect the API end to end point with Frontend & Backend & Set Up proper Flow & store data in supabase  
-- User can able to Sign Up/In (with OnboardingModal details)  
-- Project Creaction & Delete With (edit)  
-- Update the Profilemodal & Profile Page on Real Time   
-- Dashboard Update On Real Time Data   
-- Notification  
+ Setup all Backend & connect the API end to end point with Frontend & Backend & Set Up proper Flow & store data in supabase
+- User can able to Sign Up/In (with OnboardingModal details)
+- Project Creaction & Delete With (edit)
+- Update the Profilemodal & Profile Page on Real Time
+- Dashboard Update On Real Time Data
+- Notification
 - Handle CollaborationSpace (Message , File Upload , TasksTab & Mamber Tab)
 ----------------------------------------
-- User can able to Sign Up/In (with OnboardingModal details)  
+- User can able to Sign Up/In (with OnboardingModal details)
 
-- Update the Profilemodal & Profile Page on Real Time 
+- Update the Profilemodal & Profile Page on Real Time
 ---------------------------------------------
 
 If User apply the project project with (Uplode file )
 
 - The project owner go the nofification
 
-- Update the Dashbord of Both User ( Rescive & Send ) Section with correct details  
+- Update the Dashbord of Both User ( Rescive & Send ) Section with correct details
 
-- The project Owner able to downlode the which is  uplode file by User (Projectmodal.jsx) 
+- The project Owner able to downlode the which is  uplode file by User (Projectmodal.jsx)
 
 - Update with real time  DB
 ---------------------------------------------------
 If User apply the project project with (Uplode file ) updated the data in real time with DB
 
-- The Project Owner can accept or reject the application 
+- The Project Owner can accept or reject the application
 
-- Update the Dashbord of Both User ( Rescive & Send ) Section with correct details 
+- Update the Dashbord of Both User ( Rescive & Send ) Section with correct details
 -----------------------------------------------------
 I see! The acceptApplication and rejectApplication functions are only updating local state, not calling the backend API. Let me update them to call the backend:
 ---------------
 Integrate Supabase into this project for data storage & connect frontend to backend to API integrate
 -------------------------------------------
-The major Problem is 
+The major Problem is
 - On SignUp Section After Click on Create Account  User cannot proceed to onboarding  model immediately (The same issue with SignIn section)
 - After Click on Complete button it is Freeze on onboarding  model
 ------------------------------------------------
@@ -588,18 +588,18 @@ For existing users (login): Just closes the modal and user is logged in
 ------------------------------------------------------
 nodnode src/tests/manual-auth-test.js
 ------------------------------------------------------------
-Integrate Supabase for 
+Integrate Supabase for
 
- - User can able to Sign Up/In (with OnboardingModal details) 
+ - User can able to Sign Up/In (with OnboardingModal details)
 
-- Update the Profilemodal & Profile Page on Real Time 
+- Update the Profilemodal & Profile Page on Real Time
 --------------------------------------------------------------
 
 Integrate The Supabase with Sign Up/In modal
 - User can able to Sign Up/In (with OnboardingModal details)
 - User coluld able to Login Properly without Freeze
 - Update the Profilemodal & Profile Page on Real Time
-** The Flow is** 
+** The Flow is**
 - For new users (signup): Opens onboarding modal
 - For existing users (login): Just closes the modal and user is logged in
 Ensure that After a user completes signup and onboarding, Or Signin they should stay logged in even after page refresh
@@ -608,3 +608,40 @@ Connect & Integrate the Supabase with
 User can able to Sign Up/In (with OnboardingModal details)
 Update the Profilemodal & Profile Page on Real Time
 Ensure that After a user completes signup and onboarding, Or Signin they should stay logged in even after page refresh
+--------------------------------------------------------
+## Connect & Integrate Ithe Supabase in this Project
+- After <npm run server> command show Supabase is Connect
+- If Not connect  fix the error
+- If create a test file delete it after successfully run
+------------------------------------------------------------
+ display the user's full name on the profile page instead of the email address.
+ ------------------------------------------------------------------
+ ## Project Creaction & Delete With (Edit)
+- Store the Project Creaction in DB
+- User Can able to edit project details of profile page
+- When User Create a Project Or Join the Project Update the 'profile-stats-container' Projects Created  & Connections Helped status
+- Update the Application status as per User Apply on run time
+- Add the member to the  Specifications project if project Accept the Profile
+--------------------------------------------------------------
+## Project Creaction & Delete With (Edit)
+- Store the Project Creaction in DB
+- User Can able to edit project details of profile page
+- When User Create a Project Or Join the Project Update the 'profile-stats-container' Projects Created  & Connections Helped status
+- Update the Application status as per User Apply on run time
+- Add the Function to Share the resume & downlode the resume as per System Flow
+- Add the member to the  Specifications project After Click on Accept the Profile
+- After click on ACCEPTED button the Member Should add CollaborationSpace
+- Create a 1 SQL File for Project Creaction flow And Application flow
+- Donot Creat such the .md file
+------------------------------------------------------------
+Create/Edit/Delete projects stored in database
+Apply to projects with resume upload
+Accept/Reject applications with automatic member addition
+Real-time profile stats updates (Projects Created & Connections Helped)
+Accepted members automatically added to CollaborationSpace
+Secure RLS policies for data protection
+------------------------------------------------------------User creates project → Stored in Supabase database
+Trigger automatically adds owner as "Founder" member
+Profile stats (projects_created) auto-incremented
+Project appears in user's owned projects
+All data persists across sessions
