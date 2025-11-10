@@ -640,8 +640,18 @@ Accept/Reject applications with automatic member addition
 Real-time profile stats updates (Projects Created & Connections Helped)
 Accepted members automatically added to CollaborationSpace
 Secure RLS policies for data protection
-------------------------------------------------------------User creates project → Stored in Supabase database
+------------------------------------------------------------
+User creates project → Stored in Supabase database
 Trigger automatically adds owner as "Founder" member
 Profile stats (projects_created) auto-incremented
 Project appears in user's owned projects
 All data persists across sessions
+-------------------------------------------------------------
+How to fix this Performance  Warning Message
+what about  'File name'
+How to fix this Security Advisor Warning Message
+-----------------------------------------------------------
+Display the user full name  on the profile page which user filled on SignUp section in Input field instead of the email address Name.
+
+------------
+In DB the full name is null intigrate that Full name in 'AuthModal' & display that full name in profile page 'user-info' instent of email id name & store In DB
