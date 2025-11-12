@@ -522,11 +522,7 @@ function Community() {
           // Ensure social media links are available
           githubUrl: userProfile.githubUrl || '',
           linkedinUrl: userProfile.linkedinUrl || '',
-          portfolioUrl: userProfile.portfolioUrl || '',
-          twitterUrl: userProfile.twitterUrl || '',
-          instagramUrl: userProfile.instagramUrl || '',
-          phone: userProfile.phone || '',
-          website: userProfile.website || ''
+          portfolioUrl: userProfile.portfolioUrl || ''
         };
         
         setSelectedMember(profileData);
