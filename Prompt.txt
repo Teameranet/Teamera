@@ -662,11 +662,10 @@ In DB the full name is null intigrate that Full name in 'AuthModal' & display th
 
 -  Update the Profilemodal & Profile Page on Real Time as per account creation with OnboardingModal details 
 
-- For new users (signup): Opens onboarding modal
-
+- For new users (signup): Opens onboarding modal & show the details on profile page as per onboarding modal selection
 - For existing users (login): User is logged in
 
-- Ensure that After a user completes signup and onboarding, Or Signin they should stay logged in even after page refresh
+- Ensure that After a user completes signup with onboarding, Or Signin they should stay logged in even after page refresh
 
 -  Intigrate that Full Name on 'AuthModal' & display that full name on Profile page & Navbar in 'user-info' instent of email id name & Store In DB
 
@@ -675,4 +674,20 @@ In DB the full name is null intigrate that Full name in 'AuthModal' & display th
 - Create a only 1 sql file for Authentication &  Profile Page with edit  as per System Flow
 
 - Dont Create a such .md Files
-
+-------------------------------------------------------------------------------------
+## Integrate the Supabase with authentication Modal According System Flow with following points
+1. For new users (signup): Opens onboarding modal & feth the data on profile page as per onboarding modal selection
+2. For existing users (login): User is logged in
+3. Update the Profilemodal & Profile Page on Real Time as per account creation with OnboardingModal details 
+4. Ensure that After a user completes Signup (with onboarding) or Signin they should stay logged in even after refresh page
+5. Integrate that Full Name on 'AuthModal' & display that full name on Profile page & Navbar in 'user-info' instent of email id name & Store In DB
+6.feth the correct data from onboarding modal to Profile page & Navbar
+7. After user  edit there Profile  Update the  Profilemodal on Real Time & Store in DB
+8. Create a only 1 sql file for Authentication &  Profile Page with edit as per System Flow
+9. Dont Create a such .md Files
+10. Fix the major issue 
+- On SignUp Section After Click on Create Account  User cannot proceed to onboarding model immediately 
+- On SignIn Section After Click on Sign In  User cannot logged in immediately 
+- After refresh the page User cannot logged in immediately 
+11.Fix the issue of Supabase Auth prevents the use of compromised passwords by checking against HaveIBeenPwned.org. Enable this feature to enhance security.
+12.Ensure every  function is as per requment test it in brwoser with Console Problem cheak the function is working or not
