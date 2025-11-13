@@ -22,23 +22,23 @@ function CollaborationSpace({ onClose, activeProject = null, defaultTab = 'chat'
   // Filter projects where user is a team member (no limit)
   const userProjects = projects
     .filter(project => project.teamMembers.some(member => member.name === user?.name));
-  
+
   // Set active project if provided
   useEffect(() => {
     if (activeProject) {
       setSelectedProject(activeProject);
     }
   }, [activeProject]);
-  
+
   // Check if user is owner of selected project
-  const isOwner = selectedProject ? 
-    selectedProject.teamMembers.some(member => 
+  const isOwner = selectedProject ?
+    selectedProject.teamMembers.some(member =>
       member.name === user?.name && (member.role === 'Founder' || member.role === 'OWNER')
     ) : false;
 
   // Check if user is admin of selected project
-  const isAdmin = selectedProject ? 
-    selectedProject.teamMembers.some(member => 
+  const isAdmin = selectedProject ?
+    selectedProject.teamMembers.some(member =>
       member.name === user?.name && (member.role === 'ADMIN' || member.role === 'OWNER')
     ) : false;
 
@@ -54,7 +54,7 @@ function CollaborationSpace({ onClose, activeProject = null, defaultTab = 'chat'
     const projectId = e.target.value;
     const project = userProjects.find(p => p.id === projectId);
     setSelectedProject(project);
-    
+
     // Reset scroll position when changing projects
     if (contentRef.current) {
       contentRef.current.scrollTop = 0;
@@ -79,24 +79,24 @@ function CollaborationSpace({ onClose, activeProject = null, defaultTab = 'chat'
         projectId: selectedProject?.id || null,
         projectName: selectedProject?.title || 'Unknown Project'
       };
-      
+
       // Store task in localStorage
       const storedTasks = JSON.parse(localStorage.getItem('createdTasks') || '[]');
       storedTasks.unshift(taskData); // Add to beginning (most recent first)
       localStorage.setItem('createdTasks', JSON.stringify(storedTasks));
-      
+
       console.log('Task created and stored:', taskData);
-      
+
       // Reset form with current project context
-      setNewTask({ 
-        title: '', 
-        description: '', 
-        assignee: '', 
-        dueDate: '', 
-        priority: 'medium' 
+      setNewTask({
+        title: '',
+        description: '',
+        assignee: '',
+        dueDate: '',
+        priority: 'medium'
       });
       setShowNewTaskModal(false);
-      
+
       // Show success feedback (optional)
       // You can add a toast notification here
     }
@@ -108,18 +108,18 @@ function CollaborationSpace({ onClose, activeProject = null, defaultTab = 'chat'
     fileInput.type = 'file';
     fileInput.multiple = true; // Allow multiple file selection
     fileInput.click();
-    
+
     fileInput.onchange = (e) => {
       const files = Array.from(e.target.files);
       if (files.length > 0) {
         // Show uploading state
         setIsUploading(true);
-        
+
         // Process each file
         files.forEach((file, index) => {
           // Create a unique ID for the file
           const fileId = Date.now() + index;
-          
+
           // Create file object with metadata
           const fileData = {
             id: fileId,
@@ -134,12 +134,12 @@ function CollaborationSpace({ onClose, activeProject = null, defaultTab = 'chat'
             projectName: selectedProject?.title || 'Unknown Project',
             file: file // Store the actual file object
           };
-          
+
           // Store file in localStorage
           const storedFiles = JSON.parse(localStorage.getItem('uploadedFiles') || '[]');
           storedFiles.unshift(fileData); // Add to beginning (most recent first)
           localStorage.setItem('uploadedFiles', JSON.stringify(storedFiles));
-          
+
           // Simulate upload progress
           let progress = 0;
           const progressInterval = setInterval(() => {
@@ -147,7 +147,7 @@ function CollaborationSpace({ onClose, activeProject = null, defaultTab = 'chat'
             if (progress >= 100) {
               progress = 100;
               clearInterval(progressInterval);
-              
+
               // Update file status to completed
               const updatedFiles = JSON.parse(localStorage.getItem('uploadedFiles') || '[]');
               const fileIndex = updatedFiles.findIndex(f => f.id === fileId);
@@ -156,18 +156,18 @@ function CollaborationSpace({ onClose, activeProject = null, defaultTab = 'chat'
                 updatedFiles[fileIndex].progress = 100;
                 localStorage.setItem('uploadedFiles', JSON.stringify(updatedFiles));
               }
-              
+
               // Check if all files are done
               const allCompleted = updatedFiles.every(f => f.status === 'completed');
               if (allCompleted) {
-          setIsUploading(false);
+                setIsUploading(false);
                 // Scroll to top of content to show new files
-          if (contentRef.current) {
-            contentRef.current.scrollTo({
-              top: 0,
-              behavior: 'smooth'
-            });
-          }
+                if (contentRef.current) {
+                  contentRef.current.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                  });
+                }
               }
             } else {
               // Update progress in localStorage
@@ -203,9 +203,9 @@ function CollaborationSpace({ onClose, activeProject = null, defaultTab = 'chat'
         </div>
         <div className="no-projects-actions">
           <button className="browse-projects-btn" onClick={() => {
-              // Redirect to /projects and show create project modal
-              window.location.href = "/projects";
-            }}>
+            // Redirect to /projects and show create project modal
+            window.location.href = "/projects";
+          }}>
             Browse Projects
           </button>
           <button
@@ -229,7 +229,7 @@ function CollaborationSpace({ onClose, activeProject = null, defaultTab = 'chat'
         <label htmlFor="project-select">Your Projects</label>
         <div className="selector-buttons">
           {isOwner && activeTab === 'team' && (
-            <button 
+            <button
               className="invite-members-btn"
               onClick={() => setShowInviteModal(true)}
             >
@@ -238,7 +238,7 @@ function CollaborationSpace({ onClose, activeProject = null, defaultTab = 'chat'
             </button>
           )}
           {activeTab === 'tasks' && selectedProject && (
-            <button 
+            <button
               className="new-task-btn"
               onClick={() => setShowNewTaskModal(true)}
             >
@@ -247,7 +247,7 @@ function CollaborationSpace({ onClose, activeProject = null, defaultTab = 'chat'
             </button>
           )}
           {activeTab === 'files' && selectedProject && (
-            <button 
+            <button
               className={`upload-btn ${isUploading ? 'uploading' : ''}`}
               onClick={handleFileUpload}
               disabled={isUploading}
@@ -258,7 +258,7 @@ function CollaborationSpace({ onClose, activeProject = null, defaultTab = 'chat'
           )}
         </div>
       </div>
-      <select 
+      <select
         id="project-select"
         value={selectedProject?.id || ''}
         onChange={handleProjectChange}
@@ -305,9 +305,9 @@ function CollaborationSpace({ onClose, activeProject = null, defaultTab = 'chat'
       case 'chat':
         return <ChatTab project={selectedProject} />;
       case 'tasks':
-        return <TasksTab 
-          project={selectedProject} 
-          isAdmin={isAdmin} 
+        return <TasksTab
+          project={selectedProject}
+          isAdmin={isAdmin}
           isOwner={isOwner}
         />;
       case 'files':
@@ -352,7 +352,7 @@ function CollaborationSpace({ onClose, activeProject = null, defaultTab = 'chat'
         ) : (
           <div className="collaboration-content">
             {renderProjectSelector()}
-            
+
             {!selectedProject ? (
               renderNoProjectSelected()
             ) : (
@@ -410,7 +410,7 @@ function CollaborationSpace({ onClose, activeProject = null, defaultTab = 'chat'
                 <div className="invite-form">
                   <input
                     type="email"
-                    placeholder="Enter email address"
+                    placeholder="Enter Member Email Id"
                     className="invite-input"
                   />
                   <button className="send-invite-btn">
@@ -433,7 +433,7 @@ function CollaborationSpace({ onClose, activeProject = null, defaultTab = 'chat'
                     </button>
                   </div>
                 </div>
-                
+
               </div>
             </div>
           </div>

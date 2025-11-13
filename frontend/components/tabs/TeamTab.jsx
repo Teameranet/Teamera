@@ -89,8 +89,7 @@ function TeamTab({ project, isAdmin }) {
               />
               <div className="member-info">
                 <h4>{member.name}</h4>
-                <p>{getMemberEmail(member)}</p>
-                {/* <p>{user.email}</p> */}
+                <p>{getMemberEmail(member) || member.email || 'No email provided'}</p>
               </div>
               <div 
                 className="member-role"
