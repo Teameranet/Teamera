@@ -1,3 +1,6 @@
+squadup.dev - "Squad up!" (gaming/team culture)
+teamsync.io - Easy to say, clear meaning
+
 ## Redesign the home page  as per attach file accoddting to my UI Design System colour
 
 ## Updated the hero section with:
