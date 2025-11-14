@@ -1,4 +1,4 @@
-import { Twitter, Facebook, Instagram, Github } from 'lucide-react';
+import { Github } from 'lucide-react';
 import './Footer.css';
 
 function Footer() {
@@ -21,15 +21,6 @@ function Footer() {
           
           {/* Social Media Icons */}
           <div className="footer-social">
-            <a href="#" aria-label="Twitter">
-              <Twitter size={18} />
-            </a>
-            <a href="#" aria-label="Facebook">
-              <Facebook size={18} />
-            </a>
-            <a href="#" aria-label="Instagram">
-              <Instagram size={18} />
-            </a>
             <a href="#" aria-label="GitHub">
               <Github size={18} />
             </a>

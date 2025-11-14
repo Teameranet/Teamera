@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import UserAvatar from './UserAvatar';
 import './ProfileModal.css';
-import { X, Github, Linkedin, Globe, Twitter, Instagram, Phone, Mail } from 'lucide-react';
+import { X, Github, Linkedin, Globe, Mail } from 'lucide-react';
 
 /**
  * ProfileModal Component
@@ -97,7 +97,7 @@ function ProfileModal({ user, onClose }) {
                 
 
                 {/* Social media links */}
-                {(user.githubUrl || user.linkedinUrl || user.portfolioUrl || user.twitterUrl || user.instagramUrl) && (
+                {(user.githubUrl || user.linkedinUrl || user.portfolioUrl) && (
                   <div className="social-media-section">
                     <h5>Social Media</h5>
                     <div className="social-links-grid">
